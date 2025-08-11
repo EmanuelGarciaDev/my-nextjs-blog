@@ -1,4 +1,5 @@
 import Avatar from 'components/AuthorAvatar'
+import CategoryTags from 'components/CategoryTags'
 import CoverImage from 'components/CoverImage'
 import Date from 'components/PostDate'
 import type { Post } from 'lib/sanity.queries'
@@ -10,6 +11,7 @@ export default function PostPreview({
   date,
   excerpt,
   author,
+  categories,
   slug,
 }: Omit<Post, '_id'>) {
   return (
@@ -30,6 +32,11 @@ export default function PostPreview({
       <div className="mb-4 text-lg">
         <Date dateString={date} />
       </div>
+      {categories && categories.length > 0 && (
+        <div className="mb-4">
+          <CategoryTags categories={categories} variant="small" />
+        </div>
+      )}
       {excerpt && (
         <p className="mb-4 text-lg leading-relaxed text-pretty">{excerpt}</p>
       )}

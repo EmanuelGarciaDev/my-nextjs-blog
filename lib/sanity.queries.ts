@@ -9,6 +9,15 @@ const postFields = groq`
   coverImage,
   "slug": slug.current,
   "author": author->{name, picture},
+  "categories": categories[]->{
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    color,
+    icon
+  },
+  content,
 `
 
 export const settingsQuery = groq`*[_type == "settings"][0]`
@@ -40,9 +49,29 @@ export const postBySlugQuery = groq`
 }
 `
 
+export const categoriesQuery = groq`
+*[_type == "category"] | order(title asc) {
+  _id,
+  title,
+  "slug": slug.current,
+  description,
+  color,
+  icon
+}
+`
+
 export interface Author {
   name?: string
   picture?: any
+}
+
+export interface Category {
+  _id: string
+  title?: string
+  slug?: string
+  description?: string
+  color?: string
+  icon?: string
 }
 
 export interface Post {
@@ -53,6 +82,7 @@ export interface Post {
   _updatedAt?: string
   excerpt?: string
   author?: Author
+  categories?: Category[]
   slug?: string
   content?: any
 }

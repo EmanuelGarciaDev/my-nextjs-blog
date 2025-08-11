@@ -1,4 +1,5 @@
 import AuthorAvatar from 'components/AuthorAvatar'
+import CategoryTags from 'components/CategoryTags'
 import CoverImage from 'components/CoverImage'
 import Date from 'components/PostDate'
 import type { Post } from 'lib/sanity.queries'
@@ -7,10 +8,10 @@ import Link from 'next/link'
 export default function HeroPost(
   props: Pick<
     Post,
-    'title' | 'coverImage' | 'date' | 'excerpt' | 'author' | 'slug'
+    'title' | 'coverImage' | 'date' | 'excerpt' | 'author' | 'categories' | 'slug'
   >,
 ) {
-  const { title, coverImage, date, excerpt, author, slug } = props
+  const { title, coverImage, date, excerpt, author, categories, slug } = props
   return (
     <section>
       <div className="mb-8 md:mb-16">
@@ -26,6 +27,11 @@ export default function HeroPost(
           <div className="mb-4 text-lg md:mb-0">
             <Date dateString={date} />
           </div>
+          {categories && categories.length > 0 && (
+            <div className="mt-4">
+              <CategoryTags categories={categories} />
+            </div>
+          )}
         </div>
         <div>
           {excerpt && (

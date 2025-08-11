@@ -1,24 +1,24 @@
 import Container from 'components/BlogContainer'
 import BlogHeader from 'components/BlogHeader'
 import Layout from 'components/BlogLayout'
-import HeroPost from 'components/HeroPost'
+import HeroSection from 'components/HeroSection'
+import TopicsGrid from 'components/TopicsGrid'
+import FeaturedPosts from 'components/FeaturedPosts'
+import StatsSection from 'components/StatsSection'
 import IndexPageHead from 'components/IndexPageHead'
-import MoreStories from 'components/MoreStories'
-import IntroTemplate from 'intro-template'
 import * as demo from 'lib/demo.data'
-import type { Post, Settings } from 'lib/sanity.queries'
-import { Suspense } from 'react'
+import type { Post, Settings, Category } from 'lib/sanity.queries'
 
 export interface IndexPageProps {
   preview?: boolean
   loading?: boolean
   posts: Post[]
   settings: Settings
+  categories: Category[]
 }
 
 export default function IndexPage(props: IndexPageProps) {
-  const { preview, loading, posts, settings } = props
-  const [heroPost, ...morePosts] = posts || []
+  const { preview, loading, posts, settings, categories } = props
   const { title = demo.title, description = demo.description } = settings || {}
 
   return (
@@ -26,23 +26,23 @@ export default function IndexPage(props: IndexPageProps) {
       <IndexPageHead settings={settings} />
 
       <Layout preview={preview} loading={loading}>
-        <Container>
-          <BlogHeader title={title} description={description} level={1} />
-          {heroPost && (
-            <HeroPost
-              title={heroPost.title}
-              coverImage={heroPost.coverImage}
-              date={heroPost.date}
-              author={heroPost.author}
-              slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
-            />
-          )}
-          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-        </Container>
-        <Suspense>
-          <IntroTemplate />
-        </Suspense>
+        {/* Hero Section */}
+        <HeroSection 
+          title={title} 
+          description={Array.isArray(description) ? description.join(' ') : description}
+        />
+        
+        {/* Main Content */}
+        <div id="main-content">
+          {/* Topics Grid */}
+          <TopicsGrid categories={categories} />
+          
+          {/* Stats Section */}
+          <StatsSection />
+          
+          {/* Featured Posts */}
+          <FeaturedPosts posts={posts} />
+        </div>
       </Layout>
     </>
   )
